@@ -22,6 +22,8 @@ export const CLIENT_PUBLIC_FILES_PATH = 'public'
 export const CLIENT_STATIC_FILES_PATH = 'static'
 export const CLIENT_STATIC_FILES_RUNTIME = 'runtime'
 export const BODY_RENDER_TARGET = '__NEXT_BODY_RENDER_TARGET__'
+export const DEFERRED_CONTENT_PLACEHOLDER =
+  '__NEXT_DEFERRED_CONTENT_PLACEHOLDER'
 export const STRING_LITERAL_DROP_BUNDLE = '__NEXT_DROP_CLIENT_FILE__'
 // static/runtime/main.js
 export const CLIENT_STATIC_FILES_RUNTIME_MAIN = `main`

@@ -67,6 +67,7 @@ import {
 import { DomainLocale } from './config'
 import RenderResult, { NodeWritablePiper } from './render-result'
 import isError from '../lib/is-error'
+import { generateMaybeDeferContent } from './use-maybe-defer-content'
 
 function noRouter() {
   const message =
@@ -740,6 +741,7 @@ export async function renderToHTML(
     props[SERVER_PROPS_ID] = true
   }
 
+  let contentDeferred = false
   if (getServerSideProps && !isFallback) {
     let data: UnwrapPromise<ReturnType<GetServerSideProps>>
 
@@ -835,6 +837,8 @@ export async function renderToHTML(
     }
 
     if ((data as any).props instanceof Promise) {
+      // TODO(kara): allow deferred content when feature is fully implemented
+      // contentDeferred = true
       ;(data as any).props = await (data as any).props
     }
 
@@ -1085,7 +1089,7 @@ export async function renderToHTML(
     head: documentResult.head,
     headTags: documentResult.headTags,
     styles: documentResult.styles,
-    useMaybeDeferContent,
+    useMaybeDeferContent: generateMaybeDeferContent(contentDeferred),
   }
   const documentHTML = ReactDOMServer.renderToStaticMarkup(
     <AmpStateContext.Provider value={ampState}>
@@ -1367,11 +1371,4 @@ function piperToString(input: NodeWritablePiper): Promise<string> {
       }
     })
   })
-}
-
-export function useMaybeDeferContent(
-  _name: string,
-  contentFn: () => JSX.Element
-): [boolean, JSX.Element] {
-  return [false, contentFn()]
 }
